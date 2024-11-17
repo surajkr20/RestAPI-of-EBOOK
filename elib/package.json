@@ -1,0 +1,23 @@
+{
+  "name": "elib",
+  "version": "1.0.0",
+  "description": "a rest api of ebook",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "node.js",
+    "express.js",
+    "typesript",
+    "mongodb"
+  ],
+  "author": "suraj kr <suraj71308kumar@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^22.9.0",
+    "nodemon": "^3.1.7",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.6.3"
+  }
+}
