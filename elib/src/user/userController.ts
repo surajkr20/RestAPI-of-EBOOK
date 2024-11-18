@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import createHttpError from "http-errors";
+import userModel from "./userModel";
 
 const createUser = async (
   req: Request,
@@ -18,6 +19,9 @@ const createUser = async (
         const error = createHttpError(400, {message: "all fields are required"});
         return next(error)
     }
+
+    // database call
+    const user = await userModel.findOne({email})
 
     res.json({message: "user created"})
 };
