@@ -2,8 +2,6 @@ import { Request, Response, NextFunction } from "express";
 import { HttpError } from "http-errors";
 import { config } from "../config/config";
 
-console.log(config.env)
-
 const globalErrorHandler = (
   err: HttpError,
   req: Request,
