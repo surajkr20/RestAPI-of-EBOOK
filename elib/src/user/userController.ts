@@ -7,8 +7,6 @@ import { config } from "../config/config";
 import { User } from "./UserTypes";
 
 const createUser = async (req: Request, res: Response, next: NextFunction) => {
-  console.log("reqdata", req.body);
-
   // take user info from body
   const { name, email, password } = req.body;
 
@@ -58,6 +56,46 @@ const createUser = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+const loginUser = async (req: Request, res: Response, next: NextFunction) =>{
 
+  const {email, password} = req.body
+  // validation
+  if(!email || !password){
+    const error = createHttpError(400, "email and passwords are required");
+    return next(error)
+  }
 
-export { createUser };
+  // database call
+  const user = await userModel.findOne({ email });
+  try {
+    // if user with same email exist, when this condition run
+    if (!user) {
+      return next(createHttpError(404, "user not found"));
+    }
+  } catch (error) {
+    return next(createHttpError(500, "Error while getting user"));
+  }
+
+  // comaparing password for login
+  const isMatch = await bcrypt.compare(password, user.password)
+  // if password is not matched the,
+  if(!isMatch){
+    return next(createHttpError(404, "email or password is incorrect"))
+  }
+
+  try {
+    // token generation
+    const token = sign({ sub: user._id }, config.jwtSecret as string, {
+      expiresIn: "7d",
+      algorithm: 'HS256'
+    });
+
+    res.status(201).json({ 'accessToken': token });
+
+  } catch (error) {
+    return next(createHttpError(500, 'Error while signing jwt token'))
+  }
+
+}
+
+export { createUser, loginUser };
