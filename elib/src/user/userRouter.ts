@@ -8,5 +8,7 @@ import { createUser } from "./userController";
 
 userRouter.post("/register",createUser)
 
+userRouter.post("/login",loginUser);
+
 
 export default userRouter;
